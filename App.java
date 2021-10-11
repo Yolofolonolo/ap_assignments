@@ -138,11 +138,14 @@ class Data {
             }
         }
 
-        System.out.println("Number of Doses : ");
-        int gap = sc.nextInt();
-        System.out.println("Gap between Doses : ");
-        int numberOfDoses = sc.nextInt();
-
+            System.out.println("Number of Doses : ");
+            int numberOfDoses = sc.nextInt();
+            int gap =0;
+            if(numberOfDoses > 1)
+            {
+                System.out.println("Gap between Doses : ");
+                gap = sc.nextInt();
+            }
         //Add Vaccine to the List
         Vaccine vaccine = new Vaccine(Name,gap,numberOfDoses);
         setVaccineList(vaccine);
@@ -151,7 +154,7 @@ class Data {
         System.out.println("Vaccine Name: "+vaccine.getName()+", Number of Doses: "+vaccine.getNumberD()+", Gap Between Doses: "+vaccine.getGap());
     }
 
-    public void addHospital(Scanner sc){
+    public void addHospital(Scanner sc, int hID){
 
         //Input Taking
         System.out.println("Enter the Name : ");
@@ -169,7 +172,7 @@ class Data {
         }
 
         //Add Hospital to the List
-        Hospital hospital = new Hospital(Name,pinCode);
+        Hospital hospital = new Hospital(Name,pinCode, hID);
         setHospitalList(hospital);
 
         //Input confirmation
@@ -266,12 +269,12 @@ class Hospital {
     private String pinCode;
     private ArrayList<Slot> slots ;
 
-    Hospital(String name,String pinCode){
+    Hospital(String name,String pinCode, int ID){
         this.Name = name;
         this.pinCode = pinCode;
 
         //generate unique hospital id
-        this.uniqueID = 1 ; //for loop lagana hai
+        this.uniqueID = ID; //for loop lagana hai
 
         //initializing slot array
         this.slots = new ArrayList<Slot>();
@@ -281,38 +284,36 @@ class Hospital {
         //Taking Input
         System.out.println("Enter the Number of Slots to be added : ");
         int slotCount = sc.nextInt();
+        while(slotCount-- > 0)
+        {   
+            System.out.println("Day Number : ");
+            int dayNumber = sc.nextInt();
 
-        System.out.println("Day Number : ");
-        int dayNumber = sc.nextInt();
+            System.out.println("Quantity : ");
+            int quantity = sc.nextInt();
 
-        System.out.println("Quantity : ");
-        int quantity = sc.nextInt();
+            System.out.println("Select The Vaccine : ");
 
-        System.out.println("Select The Vaccine : ");
+            for(int i=0;i<data.getVaccineList().size();i++){
+                Vaccine temp = data.getVaccineList().get(i);
+                System.out.println(i + ". " + temp.getName());
+            }
 
-        for(int i=0;i<data.getVaccineList().size();i++){
-            Vaccine temp = data.getVaccineList().get(i);
-            System.out.println(i + ". " + temp.getName());
-        }
+            int vaccineIndex = sc.nextInt();
 
-        int vaccineIndex = sc.nextInt();
+            if(vaccineIndex>data.getVaccineList().size()){
+                System.out.println("Invalid Choice");
+                return;
+            }
 
-        if(vaccineIndex>data.getVaccineList().size()){
-            System.out.println("Invalid Choice");
-            return;
-        }
-
-
-
-        for(int i=0;i<slotCount;i++){
-            //Initializing slot
+                //Initializing slot
             Slot slot = new Slot(dayNumber,quantity,data.getVaccineList().get(vaccineIndex));
             slots.add(slot);
+            System.out.println(slot.getDay());
+            
+            //Confirmation
+            System.out.println("Slot added by Hospital : "+ this.uniqueID +", for Day: "+dayNumber+", Available Quantity: "+quantity+" of Vaccine : "+data.getVaccineList().get(vaccineIndex).getName());
         }
-
-        //Confirmation
-        System.out.println("Slot added by Hospital : "+ this.uniqueID +", for Day: "+dayNumber+", Available Quantity: "+quantity+" of Vaccine : "+data.getVaccineList().get(vaccineIndex).getName());
-
     }
 
     public String getName() {
@@ -328,6 +329,7 @@ class Hospital {
     }
 
     public void listSlots() {
+        System.out.println(slots.size());
         if(slots.size()==0){
             System.out.println("No slots available");
             return;
@@ -417,7 +419,7 @@ class Slot {
 class Cowin {
 
     static Data data = new Data();
-
+    static int hospID = 100000;
     static String menu = "CoWin Portal initialized....\n" +
             "---------------------------------\n" +
             "1. Add Vaccine\n" +
@@ -444,7 +446,7 @@ class Cowin {
             if (n == 1) {
                 addVaccine(sc);
             } else if (n == 2) {
-                registerHospital(sc);
+                registerHospital(sc, hospID++);
             } else if (n == 3) {
                 registerCitizen(sc);
             } else if (n == 4) {
@@ -468,8 +470,8 @@ class Cowin {
         return;
     }
 
-    private static void registerHospital(Scanner sc){
-        data.addHospital(sc);
+    private static void registerHospital(Scanner sc, int hID){
+        data.addHospital(sc, hID);
         return;
     }
 
@@ -553,9 +555,11 @@ class Cowin {
 }
 
 
-public class App {
+public class Appp {
     public static void main(String[] args){
         Cowin.start();
     }
 }
+
+
 
