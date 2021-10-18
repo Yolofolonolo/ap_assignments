@@ -1,8 +1,76 @@
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.zip.DataFormatException;
+import java.util.regex.Pattern;
 
 class Lecture_Slides implements material{
-    private String s = "";
+    private String topic;
+    private String number;
+    private String [] content;
+    private String time;
+
+    public Lecture_Slides(String topic, String number, String[] content, String time, int addedbyuser, String filename) {
+        this.topic = topic;
+        this.number = number;
+        this.content = content;
+        this.time = time;
+        this.addedbyuser = addedbyuser;
+        this.filename = filename;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public void setContent(String[] content) {
+        this.content = content;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public void setAddedbyuser(int addedbyuser) {
+        this.addedbyuser = addedbyuser;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public String[] getContent() {
+        return content;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public int getAddedbyuser() {
+        return addedbyuser;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    private int addedbyuser;
+    private String filename;
+
     @Override
     public void add(){
 
@@ -13,6 +81,50 @@ class Lecture_Slides implements material{
     }
 }
 class lecture_Recordings implements material {
+    private String topic;
+    private String uploaded_by;
+    private String upload_time;
+    private String file_name;
+
+    public lecture_Recordings(String topic, String uploaded_by, String upload_time, String file_name) {
+        this.topic = topic;
+        this.uploaded_by = uploaded_by;
+        this.upload_time = upload_time;
+        this.file_name = file_name;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public String getUploaded_by() {
+        return uploaded_by;
+    }
+
+    public void setUploaded_by(String uploaded_by) {
+        this.uploaded_by = uploaded_by;
+    }
+
+    public String getUpload_time() {
+        return upload_time;
+    }
+
+    public void setUpload_time(String upload_time) {
+        this.upload_time = upload_time;
+    }
+
+    public String getFile_name() {
+        return file_name;
+    }
+
+    public void setFile_name(String file_name) {
+        this.file_name = file_name;
+    }
+
     @Override
     public void add(){
 
@@ -26,13 +138,56 @@ interface material{
     public void add();
     public void view();
 }
-interface loda{
+interface assessment{
     public void add();
     public void view();
     public void submission();
     public void grade();
 }
-class assignment implements loda {
+class assignment implements assessment {
+    public assignment(String problem_statement, String max_marks, String uploaded_by, String uploaded_time) {
+        this.problem_statement = problem_statement;
+        this.max_marks = max_marks;
+        this.uploaded_by = uploaded_by;
+        this.uploaded_time = uploaded_time;
+    }
+
+    public String getProblem_statement() {
+        return problem_statement;
+    }
+
+    public void setProblem_statement(String problem_statement) {
+        this.problem_statement = problem_statement;
+    }
+
+    public String getMax_marks() {
+        return max_marks;
+    }
+
+    public void setMax_marks(String max_marks) {
+        this.max_marks = max_marks;
+    }
+
+    public String getUploaded_by() {
+        return uploaded_by;
+    }
+
+    public void setUploaded_by(String uploaded_by) {
+        this.uploaded_by = uploaded_by;
+    }
+
+    public String getUploaded_time() {
+        return uploaded_time;
+    }
+
+    public void setUploaded_time(String uploaded_time) {
+        this.uploaded_time = uploaded_time;
+    }
+
+    private String problem_statement;
+    private String max_marks;
+    private String uploaded_by;
+    private String uploaded_time;
 
     public void add() {
     }
@@ -61,7 +216,40 @@ class assignment implements loda {
 
     }
 }
-class quiz implements loda {
+class quiz implements assessment {
+    public quiz(String uploaded_by, String uploaded_time, String question) {
+        this.uploaded_by = uploaded_by;
+        this.uploaded_time = uploaded_time;
+        this.question = question;
+    }
+
+    public String getUploaded_by() {
+        return uploaded_by;
+    }
+
+    public void setUploaded_by(String uploaded_by) {
+        this.uploaded_by = uploaded_by;
+    }
+
+    public String getUploaded_time() {
+        return uploaded_time;
+    }
+
+    public void setUploaded_time(String uploaded_time) {
+        this.uploaded_time = uploaded_time;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    private String uploaded_by;
+    private String uploaded_time;
+    private String question;
 
     public void add() {
     }
@@ -89,9 +277,54 @@ class student{
 
 }
 class comment implements material{
+    public comment(String comment, String uploaded_time, String uploaded_by) {
+        this.comment = comment;
+        this.uploaded_time = uploaded_time;
+        this.uploaded_by = uploaded_by;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getUploaded_time() {
+        return uploaded_time;
+    }
+
+    public void setUploaded_time(String uploaded_time) {
+        this.uploaded_time = uploaded_time;
+    }
+
+    public String getUploaded_by() {
+        return uploaded_by;
+    }
+
+    public void setUploaded_by(String uploaded_by) {
+        this.uploaded_by = uploaded_by;
+    }
+
+    private String comment;
+    private String uploaded_time;
+    private String uploaded_by;
+    Date dateobject = new Date();
+    SimpleDateFormat date = new SimpleDateFormat("E,dd MM yyyy HH:mm:ss z");
+    ArrayList<String> commentsArrayList=new ArrayList<>();
     @Override
     public void add() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter comment: ");
+        String comment = sc.nextLine();
+        String uploaded_time = date.format(dateobject);
+        String uploaded_by = uploadedby;
         
+        comments comment_object = new comments(comment , uploaded_by , uploaded_time);
+        
+        commentsArrayList.add(comment_object);
+
     }
 
     @Override
@@ -162,15 +395,15 @@ class backpack {
 
                         if (choiceforlecture == 1) {
 
-                            Lecture_Slides slidesobject = new Lecture_Slides();
+                            //Lecture_Slides slidesobject = new Lecture_Slides();
 
-                            slidesobject.add();
+                            //slidesobject.add();
 
                         } else if (choiceforlecture == 2) {
 
-                            lecture_Recordings videosobject = new lecture_Recordings();
+                            //lecture_Recordings videosobject = new lecture_Recordings();
 
-                            videosobject.add();
+                            //videosobject.add();
 
                         }
 
@@ -182,16 +415,16 @@ class backpack {
 
                         if (choice == 1) {
 
-                            assignment assignmentobject = new assignment();
+                            //assignment assignmentobject = new assignment();
 
-                            assignmentobject.add();
+                            //assignmentobject.add();
 
                         } else if (choice == 2) {
 
 
-                            quiz quizobject = new quiz();
+                            //quiz quizobject = new quiz();
 
-                            quizobject.add();
+                            //quizobject.add();
 
                         }
 
@@ -199,11 +432,11 @@ class backpack {
 
                     else if(choicefortask == 3 ) {
 
-                        Lecture_Slides slidesobject = new Lecture_Slides();
-                        lecture_Recordings videosobject = new lecture_Recordings();
-                        slidesobject.view();
+                        //Lecture_Slides slidesobject = new Lecture_Slides();
+                        //lecture_Recordings videosobject = new lecture_Recordings();
+                        //slidesobject.view();
                         System.out.println("-----------------------------------------");
-                        videosobject.view();
+                        //videosobject.view();
 
                     }
 
@@ -211,11 +444,11 @@ class backpack {
 
                         int counter = 0;
 
-                        assignment assignmentobject = new assignment();
-                        quiz quizobject = new quiz();
-                        assignmentobject.view();
+                        //assignment assignmentobject = new assignment();
+                        //quiz quizobject = new quiz();
+                        //assignmentobject.view();
                         System.out.println("-----------------------------------------");
-                        quizobject.view();
+                        //quizobject.view();
 
                     }
                     else if(choicefortask == 5 ){
@@ -259,6 +492,8 @@ public class Appp {
     }
 
 }
+
+
 
 
 
