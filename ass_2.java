@@ -4,14 +4,13 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 import java.util.zip.DataFormatException;
 import java.util.regex.Pattern;
-
 class Lecture_Slides implements material{
     private String topic;
     private String number;
     private String [] content;
     private String time;
 
-    public Lecture_Slides(String topic, String number, String[] content, String time, int addedbyuser, String filename) {
+    public Lecture_Slides() {
         this.topic = topic;
         this.number = number;
         this.content = content;
@@ -72,7 +71,7 @@ class Lecture_Slides implements material{
     private String filename;
 
     @Override
-    public void add(){
+    public void add(String uploadedby){
 
     }
     @Override
@@ -86,7 +85,7 @@ class lecture_Recordings implements material {
     private String upload_time;
     private String file_name;
 
-    public lecture_Recordings(String topic, String uploaded_by, String upload_time, String file_name) {
+    public lecture_Recordings() {
         this.topic = topic;
         this.uploaded_by = uploaded_by;
         this.upload_time = upload_time;
@@ -126,7 +125,7 @@ class lecture_Recordings implements material {
     }
 
     @Override
-    public void add(){
+    public void add(String uploadedby){
 
     }
     @Override
@@ -135,7 +134,7 @@ class lecture_Recordings implements material {
     }
 }
 interface material{
-    public void add();
+    public void add(String uploadedby);
     public void view();
 }
 interface assessment{
@@ -145,7 +144,7 @@ interface assessment{
     public void grade();
 }
 class assignment implements assessment {
-    public assignment(String problem_statement, String max_marks, String uploaded_by, String uploaded_time) {
+    public assignment() {
         this.problem_statement = problem_statement;
         this.max_marks = max_marks;
         this.uploaded_by = uploaded_by;
@@ -217,7 +216,7 @@ class assignment implements assessment {
     }
 }
 class quiz implements assessment {
-    public quiz(String uploaded_by, String uploaded_time, String question) {
+    public quiz() {
         this.uploaded_by = uploaded_by;
         this.uploaded_time = uploaded_time;
         this.question = question;
@@ -272,23 +271,29 @@ class quiz implements assessment {
 }
 
 class instructor {
+
+    public static void TryInstructorID(String instructor_id) {
+    }
+
+    public static void close_assessment() {
+    }
 }
 class student{
 
 }
 class comment implements material{
-    public comment(String comment, String uploaded_time, String uploaded_by) {
-        this.comment = comment;
+    public comment(String comments2, String uploaded_by2, String uploaded_time2) {
+        this.comments = comments;
         this.uploaded_time = uploaded_time;
         this.uploaded_by = uploaded_by;
     }
 
     public String getComment() {
-        return comment;
+        return comments;
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+        this.comments = comment;
     }
 
     public String getUploaded_time() {
@@ -307,21 +312,21 @@ class comment implements material{
         this.uploaded_by = uploaded_by;
     }
 
-    private String comment;
+    private String comments;
     private String uploaded_time;
     private String uploaded_by;
     Date dateobject = new Date();
     SimpleDateFormat date = new SimpleDateFormat("E,dd MM yyyy HH:mm:ss z");
-    ArrayList<String> commentsArrayList=new ArrayList<>();
+    ArrayList<comment> commentsArrayList=new ArrayList<>();
     @Override
-    public void add() {
+    public void add(String uploadedby) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter comment: ");
-        String comment = sc.nextLine();
+        String comments = sc.nextLine();
         String uploaded_time = date.format(dateobject);
         String uploaded_by = uploadedby;
         
-        comments comment_object = new comments(comment , uploaded_by , uploaded_time);
+        comment comment_object = new comment(comments , uploaded_by , uploaded_time);
         
         commentsArrayList.add(comment_object);
 
@@ -329,11 +334,239 @@ class comment implements material{
 
     @Override
     public void view() {
+        for (int i = 0 ; i < commentsArrayList.size() ; i++) {
+            System.out.println(commentsArrayList.get(i).comments + " - " + commentsArrayList.get(i).getUploaded_by());
+            System.out.println(commentsArrayList.get(i).uploaded_time);
 
+        }
+    }
+
+    public void add() {
     }
 }
 class backpack {
     //arraylist for all the classes 
+    static Scanner sc = new Scanner(System.in);
+
+    public static String instructor_id;
+
+    static int student_id;
+
+    public static void funciton () {
+
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+
+            System.out.println("Welcome to Backpack.");
+            System.out.println("1. Enter as instructor\n" +
+                    "2. Enter as student\n" +
+                    "3. Exit");
+
+            System.out.print("Enter your choice. ");
+
+            int choice = sc.nextInt();
+
+            if (choice == 1) {
+
+                System.out.println("Instructors:\n" +
+                        "0 - I0\n" +
+                        "1 - I1");
+
+                System.out.print("Enter instructor ID. ");
+
+                instructor_id = sc.nextLine();
+
+                while (true) {
+
+                    instructor.TryInstructorID(instructor_id);
+
+                    displayinstructor();
+
+                    System.out.print("Enter the number for the task you want to perform. ");
+
+                    int choicefortask = sc.nextInt();
+
+                    if (choicefortask == 1) {
+
+                        System.out.println("1. Add Lecture Slide\n2. Add Lecture Video");
+
+                        int choiceforlecture = sc.nextInt();
+
+                        if (choiceforlecture == 1) {
+
+                            Lecture_Slides slidesobject = new Lecture_Slides();
+
+                            slidesobject.add(instructor_id);
+
+                        } else if (choiceforlecture == 2) {
+
+                            lecture_Recordings videosobject = new lecture_Recordings();
+
+                            videosobject.add(instructor_id);
+
+                        }
+
+                    }
+                    else if (choicefortask == 2) {
+
+                        System.out.println("1. Add Assignment\n" +
+                                "2. Add Quiz");
+
+                        System.out.print("Enter your choice. ");
+
+                        choice = sc.nextInt();
+
+
+                        if (choice == 1) {
+
+                            assignment assignmentobject = new assignment();
+
+                            assignmentobject.add();
+
+                        } else if (choice == 2) {
+
+
+                            quiz quizobject = new quiz();
+
+                            quizobject.add();
+
+                        }
+
+                    }
+
+                    else if(choicefortask == 3 ) {
+
+                        Lecture_Slides slidesobject = new Lecture_Slides();
+                        lecture_Recordings videosobject = new lecture_Recordings();
+
+                        slidesobject.view();
+
+                        System.out.println("-----------------------------------------");
+
+                        videosobject.view();
+
+                    }
+
+                    else if(choicefortask == 4 ) {
+
+                        int counter = 0;
+
+                        assignment assignmentobject = new assignment();
+                        quiz quizobject = new quiz();
+                        assignmentobject.view();
+                        System.out.println("-----------------------------------------");
+                        quizobject.view();
+
+                    }
+
+                    else if(choicefortask == 5) {
+                        System.out.println("grade assignments");
+                    }
+
+                    else if(choicefortask == 6 ) {
+
+                        instructor.close_assessment();
+
+                    }
+
+                    else if(choicefortask == 7) {
+                        comment commentObject = new comment(instructor_id, instructor_id, instructor_id);
+                        commentObject.view();
+                    }
+
+                    else if(choicefortask == 8) {
+
+                        comment commentObject = new comment(instructor_id, instructor_id, instructor_id);
+                        commentObject.add();
+
+                    }
+
+                    else if(choicefortask==9) {
+                        break;
+                    }
+
+                }
+
+
+//            displayInstructor();
+
+            }
+
+            else if (choice == 2) {
+
+                System.out.println("Students:\n" +
+                        "0 - S0\n" +
+                        "1 - S1\n" +
+                        "2 - S2");
+
+                System.out.println("Choose the student id. ");
+
+                student_id = sc.nextInt();
+
+                while (true) {
+
+                    A2.student.TryStudentID(student_id);
+
+                    displaystudent();
+
+                    System.out.print("Enter the number for the task you want to perform. ");
+
+                    int choicefortask = sc.nextInt();
+
+                    if(choicefortask == 1){
+
+                        Lecture_Slides slidesobject = new Lecture_Slides();
+                        lecture_Recordings videosobject = new lecture_Recordings();
+
+                        slidesobject.view();
+
+                        System.out.println("-----------------------------------------");
+
+                        videosobject.view();
+
+                    }
+
+                    else if (choicefortask == 2) {
+
+                        int counter = 0;
+
+                        assignment assignmentobject = new assignment();
+                        quiz quizobject = new quiz();
+                        assignmentobject.view();
+                        System.out.println("-----------------------------------------");
+                        quizobject.view();
+
+                    }
+                    else if(choicefortask == 3 ) {
+                        A2.student student_object = new student();
+                        student_object.submitAssessment(student_id);
+                    }
+                    else if(choicefortask == 4) {
+                        System.out.println("view grades");
+                    }
+                    else if(choicefortask == 5 ) {
+
+                        comment commentObject = new comment(instructor_id, instructor_id, instructor_id);
+                        commentObject.view();
+                    }
+                    else if(choicefortask == 6 ) {
+
+                        comment commentObject = new comment(instructor_id, instructor_id, instructor_id);
+                        commentObject.add();
+
+                    }
+                    else if(choicefortask == 7) {
+                        break;
+                    }
+                }
+            }
+
+            else if (choice == 3) {
+                break;
+            }
+        }
+    }
 
     public static void displayinstructor () {
         System.out.println("INSTRUCTOR MENU\n" +
@@ -360,128 +593,15 @@ class backpack {
     }
 
 
-    Scanner sc = new Scanner(System.in);{
+//    ArrayList <videos> lecturesvideo = new ArrayList<>();
 
-        while (true) {
+//    ArrayList <assignments> assignmentlist = new ArrayList<>();
 
-            System.out.println("Welcome to Backpack.");
-            System.out.println("1. Enter as instructor\n" +
-                    "2. Enter as student\n" +
-                    "3. Exit");
+//    ArrayList <quizzes> quizzeslist = new ArrayList<>();
 
-            int choice = sc.nextInt();
+    ArrayList <String> instructors = new ArrayList<>();
 
-            if (choice == 1) {
-
-                System.out.println("Instructors:\n" +
-                        "0 - I0\n" +
-                        "1 - I1");
-
-                String instructor_id = sc.next();
-
-                System.out.println("Welcome " + instructor_id);
-
-                while (true) {
-
-                    displayinstructor();
-
-                    int choicefortask = sc.nextInt();
-
-                    if (choicefortask == 1) {
-
-                        System.out.println("1. Add Lecture Slide\n2. Add Lecture Video");
-
-                        int choiceforlecture = sc.nextInt();
-
-                        if (choiceforlecture == 1) {
-
-                            //Lecture_Slides slidesobject = new Lecture_Slides();
-
-                            //slidesobject.add();
-
-                        } else if (choiceforlecture == 2) {
-
-                            //lecture_Recordings videosobject = new lecture_Recordings();
-
-                            //videosobject.add();
-
-                        }
-
-                    }
-                    else if (choicefortask == 2) {
-
-                        System.out.println("1. Add Assignment\n" +
-                                "2. Add Quiz");
-
-                        if (choice == 1) {
-
-                            //assignment assignmentobject = new assignment();
-
-                            //assignmentobject.add();
-
-                        } else if (choice == 2) {
-
-
-                            //quiz quizobject = new quiz();
-
-                            //quizobject.add();
-
-                        }
-
-                    }
-
-                    else if(choicefortask == 3 ) {
-
-                        //Lecture_Slides slidesobject = new Lecture_Slides();
-                        //lecture_Recordings videosobject = new lecture_Recordings();
-                        //slidesobject.view();
-                        System.out.println("-----------------------------------------");
-                        //videosobject.view();
-
-                    }
-
-                    else if(choicefortask == 4 ) {
-
-                        int counter = 0;
-
-                        //assignment assignmentobject = new assignment();
-                        //quiz quizobject = new quiz();
-                        //assignmentobject.view();
-                        System.out.println("-----------------------------------------");
-                        //quizobject.view();
-
-                    }
-                    else if(choicefortask == 5 ){
-
-                    }
-                    else if(choicefortask == 6 ) {
-
-                    }
-                    else if(choicefortask == 7 ) {
-
-                    }
-                    else if(choicefortask == 8 ) {
-
-                    }
-
-                    else if(choicefortask==9) {
-                        break;
-                    }
-
-
-                }
-
-
-                displayinstructor();
-
-            }
-
-            else if (choice == 3) {
-                break;
-            }
-        }
-    }
-
+    ArrayList <String> student = new ArrayList<>();
     public static void start() {
     }
 }
@@ -492,6 +612,8 @@ public class Appp {
     }
 
 }
+
+
 
 
 
