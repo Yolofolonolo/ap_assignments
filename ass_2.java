@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.*;
 
-class lecutre_Slides {
+class Lecture_Slides {
 }
 class lecture_Recordings {
 }
@@ -14,8 +14,140 @@ class data {
 class backpack {
 }
 public class Appp {
-    public static void main(String[] args){
-        //backpack.start();
+    public static void displayinstructor () {
+        System.out.println("INSTRUCTOR MENU\n" +
+                "1. Add class material\n" +
+                "2. Add assessments\n" +
+                "3. View lecture materials\n" +
+                "4. View assessments\n" +
+                "5. Grade assessments\n" +
+                "6. Close assessment\n" +
+                "7. View comments\n" +
+                "8. Add comments\n" +
+                "9. Logout");
+    }
+
+    public static void displaystudent() {
+        System.out.println("STUDENT MENU\n" +
+                "1. View lecture materials\n" +
+                "2. View assessments\n" +
+                "3. Submit assessment\n" +
+                "4. View grades\n" +
+                "5. View comments\n" +
+                "6. Add comments\n" +
+                "7. Logout");
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+
+            System.out.println("Welcome to Backpack.");
+            System.out.println("1. Enter as instructor\n" +
+                    "2. Enter as student\n" +
+                    "3. Exit");
+
+            int choice = sc.nextInt();
+
+            if (choice == 1) {
+
+                System.out.println("Instructors:\n" +
+                        "0 - I0\n" +
+                        "1 - I1");
+
+                String instructor_id = sc.next();
+
+                System.out.println("Welcome " + instructor_id);
+
+                while (true) {
+
+                    displayinstructor();
+
+                    int choicefortask = sc.nextInt();
+
+                    if (choicefortask == 1) {
+
+                        System.out.println("1. Add Lecture Slide\n2. Add Lecture Video");
+
+                        int choiceforlecture = sc.nextInt();
+
+                        if (choiceforlecture == 1) {
+
+                            Lecture_Slides slidesobject = new Lecture_Slides();
+
+                            slidesobject.add();
+
+                        } else if (choiceforlecture == 2) {
+
+                            lecture_Recordings videosobject = new lecture_Recordings();
+
+                            videosobject.add();
+
+                        }
+
+                    }
+                    else if (choicefortask == 2) {
+
+                        System.out.println("1. Add Assignment\n" +
+                                "2. Add Quiz");
+
+                        if (choice == 1) {
+
+                            assignment assignmentobject = new assignment();
+
+                            assignmentobject.add();
+
+                        } else if (choice == 2) {
+
+
+                            quiz quizobject = new quiz();
+
+                            quizobject.add();
+
+                        }
+
+                    }
+
+                    else if(choicefortask == 3 ) {
+
+                        Lecture_Slides slidesobject = new Lecture_Slides();
+                        lecture_Recordings videosobject = new lecture_Recordings();
+                        slidesobject.view();
+                        System.out.println("-----------------------------------------");
+                        videosobject.view();
+
+                    }
+
+                    else if(choicefortask == 4 ) {
+
+                        int counter = 0;
+
+                        assignment assignmentobject = new assignment();
+                        quiz quizobject = new quiz();
+                        assignmentobject.view(counter);
+                        System.out.println("-----------------------------------------");
+                        quizobject.view(counter);
+
+                    }
+
+                    else if(choicefortask==9) {
+                        break;
+                    }
+
+                }
+
+
+            displayInstructor();
+
+            }
+
+            else if (choice == 3) {
+                break;
+            }
+        }
     }
 }
+
+
 
