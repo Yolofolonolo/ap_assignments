@@ -1,19 +1,72 @@
 import java.util.ArrayList;
 import java.util.*;
 
-class Lecture_Slides {
+class Lecture_Slides extends backpack implements material{
+    private String s = "";
+    @Override
+    public void add(){
+
+    }
+    @Override
+    public void view(){
+
+    }
 }
-class lecture_Recordings {
+class lecture_Recordings extends backpack implements material {
+    @Override
+    public void add(){
+
+    }
+    @Override
+    public void view(){
+
+    }
 }
-class assignment {
-} 
-class quiz {
+interface material{
+    public void add();
+    public void view();
 }
-class data {
+class assignment extends backpack implements material {
+
+    public void add() {
+    }
+
+    public void view(int counter) {
+    }
+
+    @Override
+    public void view() {
+        // TODO Auto-generated method stub
+        
+    }
+}
+class quiz extends backpack implements material {
+
+    public void add() {
+    }
+
+    public void view(int counter) {
+    }
+
+    @Override
+    public void view() {
+        // TODO Auto-generated method stub
+        
+    }
+}
+class course{
+
+}
+
+class instructor {
+}
+class student{
+
+}
+class comment{
+
 }
 class backpack {
-}
-public class Appp {
     public static void displayinstructor () {
         System.out.println("INSTRUCTOR MENU\n" +
                 "1. Add class material\n" +
@@ -38,8 +91,8 @@ public class Appp {
                 "7. Logout");
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    
+        Scanner sc = new Scanner(System.in);{
 
         while (true) {
 
@@ -138,7 +191,7 @@ public class Appp {
                 }
 
 
-            displayInstructor();
+                displayinstructor();
 
             }
 
@@ -147,7 +200,18 @@ public class Appp {
             }
         }
     }
+
+        public static void start() {
+        }
 }
+
+public class Appp {
+    public static void main(String[] args){
+        backpack.start();
+    }
+   
+}
+
 
 
 
