@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.*;
 
-class Lecture_Slides extends backpack implements material{
+class Lecture_Slides implements material{
     private String s = "";
     @Override
     public void add(){
@@ -12,7 +12,7 @@ class Lecture_Slides extends backpack implements material{
 
     }
 }
-class lecture_Recordings extends backpack implements material {
+class lecture_Recordings implements material {
     @Override
     public void add(){
 
@@ -26,35 +26,60 @@ interface material{
     public void add();
     public void view();
 }
-class assignment extends backpack implements material {
+interface loda{
+    public void add();
+    public void view();
+    public void submission();
+    public void grade();
+}
+class assignment implements loda {
 
     public void add() {
     }
 
-    public void view(int counter) {
-    }
+
 
     @Override
     public void view() {
-        // TODO Auto-generated method stub
-        
+
+
+    }
+
+
+
+    @Override
+    public void submission() {
+
+
+    }
+
+
+
+    @Override
+    public void grade() {
+
+
     }
 }
-class quiz extends backpack implements material {
+class quiz implements loda {
 
     public void add() {
     }
 
-    public void view(int counter) {
+    public void view() {
     }
 
     @Override
-    public void view() {
-        // TODO Auto-generated method stub
-        
+    public void submission() {
+
+
     }
-}
-class course{
+
+    @Override
+    public void grade() {
+
+
+    }
 
 }
 
@@ -63,10 +88,20 @@ class instructor {
 class student{
 
 }
-class comment{
+class comment implements material{
+    @Override
+    public void add() {
+        
+    }
 
+    @Override
+    public void view() {
+
+    }
 }
 class backpack {
+    //arraylist for all the classes 
+
     public static void displayinstructor () {
         System.out.println("INSTRUCTOR MENU\n" +
                 "1. Add class material\n" +
@@ -91,8 +126,8 @@ class backpack {
                 "7. Logout");
     }
 
-    
-        Scanner sc = new Scanner(System.in);{
+
+    Scanner sc = new Scanner(System.in);{
 
         while (true) {
 
@@ -178,15 +213,28 @@ class backpack {
 
                         assignment assignmentobject = new assignment();
                         quiz quizobject = new quiz();
-                        assignmentobject.view(counter);
+                        assignmentobject.view();
                         System.out.println("-----------------------------------------");
-                        quizobject.view(counter);
+                        quizobject.view();
+
+                    }
+                    else if(choicefortask == 5 ){
+
+                    }
+                    else if(choicefortask == 6 ) {
+
+                    }
+                    else if(choicefortask == 7 ) {
+
+                    }
+                    else if(choicefortask == 8 ) {
 
                     }
 
                     else if(choicefortask==9) {
                         break;
                     }
+
 
                 }
 
@@ -201,15 +249,15 @@ class backpack {
         }
     }
 
-        public static void start() {
-        }
+    public static void start() {
+    }
 }
 
 public class Appp {
     public static void main(String[] args){
         backpack.start();
     }
-   
+
 }
 
 
