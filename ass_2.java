@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.*;
 import java.text.SimpleDateFormat;
@@ -6,16 +5,18 @@ import java.util.zip.DataFormatException;
 import javax.print.DocFlavor.STRING;
 // import jdk.javadoc.internal.doclets.formats.html.SourceToHTMLConverter;
 import java.util.regex.Pattern;
+import java.util.*;
+
 class Lecture_Slides implements material{
     private String topic;
     private String number;
     private String [] content;
-    private String time;
+    private Date time;
     private String uploaded_by;
 
     public Lecture_Slides () {}
 
-    public Lecture_Slides(String topic, String number, String [] content , String uploaded_by , String uploaded_time) {
+    public Lecture_Slides(String topic, String number, String [] content , String uploaded_by , Date uploaded_time) {
         this.topic = topic;
         this.number = number;
         this.content = content;
@@ -32,10 +33,6 @@ class Lecture_Slides implements material{
 
     public void setContent(String [] content) {
         this.content = content;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public void setUploaded_by(String uploadedby) {
@@ -58,7 +55,7 @@ class Lecture_Slides implements material{
         return content;
     }
 
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
@@ -75,7 +72,7 @@ class Lecture_Slides implements material{
 
     Date dateobject = new Date();
     SimpleDateFormat date = new SimpleDateFormat("E,dd MM yyyy HH:mm:ss z");
-    ArrayList<Lecture_Slides> slidesArrayList=new ArrayList<>();
+    static ArrayList<Lecture_Slides> slidesArrayList=new ArrayList<>();
     private String uploaded_time;
     int intnumber;
     @Override
@@ -91,14 +88,13 @@ class Lecture_Slides implements material{
             System.out.print("Content of slide " + (i + 1) + ": ");
             content[i] = sc.nextLine();
         }
-        String uploaded_time = date.format(dateobject);
+        Date uploaded_time = java.util.Calendar.getInstance().getTime();
         String uploaded_by = uploadedby;
+        System.out.print(uploaded_time);
 
         Lecture_Slides slides_object = new Lecture_Slides(topic, number, content , uploaded_by , uploaded_time);
 
         slidesArrayList.add(slides_object);
-
-        System.out.println(slidesArrayList.size());
         
     }
     @Override
@@ -119,12 +115,12 @@ class Lecture_Slides implements material{
 class lecture_Recordings implements material {
     private String topic;
     private String uploaded_by;
-    private String upload_time;
+    private Date upload_time;
     private String file_name;
 
     public lecture_Recordings() { }
 
-    public lecture_Recordings(String topic, String uploaded_by, String upload_time, String file_name) {
+    public lecture_Recordings(String topic, String uploaded_by, Date upload_time, String file_name) {
         this.topic = topic;
         this.uploaded_by = uploaded_by;
         this.upload_time = upload_time;
@@ -147,11 +143,8 @@ class lecture_Recordings implements material {
         this.uploaded_by = uploaded_by;
     }
 
-    public String getUpload_time() {
-        return upload_time;
-    }
 
-    public void setUpload_time(String upload_time) {
+    public void setUpload_time(Date upload_time) {
         this.upload_time = upload_time;
     }
 
@@ -179,7 +172,9 @@ class lecture_Recordings implements material {
             System.out.print("invalid");
             return;
         }
-        String upload_time = date.format(dateobject);
+        Date uploaded_time = java.util.Calendar.getInstance().getTime();
+        String uploaded_by = uploadedby;
+        System.out.print(uploaded_time);
 
         lecture_Recordings obj = new lecture_Recordings(topic, uploaded_by, upload_time, file_name);
         // String[] arr = {topic, file_name, uploaded_time, uploadedby};
@@ -203,8 +198,30 @@ interface assessment{
     public void submission();
     public void grade();
 }
+class Submission{
+    private final String answer;
+    private  float grade;
+    private final String student;
+    private instructor inst;
+    Submission(String s, String ans){
+        student = s;
+        answer = ans;
+
+
+
+    }
+    public void setGrade(instructor i, float marks){
+        grade = marks;
+        inst = i;
+
+    }
+
+
+}
 class assignment implements assessment, material {
-    public assignment(String problem_statement, String max_marks , String uploaded_by ,String uploaded_time) {
+    Scanner sc = new Scanner(System.in);
+    ArrayList<Submission> submissions = new ArrayList<>();
+    public assignment(String problem_statement, String max_marks , String uploaded_by ,Date uploaded_time ) {
         this.problem_statement = problem_statement;
         this.max_marks = max_marks;
         this.uploaded_by = uploaded_by;
@@ -235,21 +252,25 @@ class assignment implements assessment, material {
         this.uploaded_by = uploaded_by;
     }
 
-    public String getUploaded_time() {
+    public Date getUploaded_time() {
         return uploaded_time;
     }
 
-    public void setUploaded_time(String uploaded_time) {
+    public void setUploaded_time(Date uploaded_time) {
         this.uploaded_time = uploaded_time;
     }
 
     private String problem_statement;
     private String max_marks;
     private String uploaded_by;
-    private String uploaded_time;
+    private Date uploaded_time;
 
     
-    public void submission() {
+    public void submission(String student_id) {
+        System.out.println("Enter filename of assignment: ");
+        String answer = sc.next();
+        submissions.add(new Submission(student_id, answer));
+
 
 
     }
@@ -263,7 +284,7 @@ class assignment implements assessment, material {
     }
     Date dateobject = new Date();
     SimpleDateFormat date = new SimpleDateFormat("E,dd MM yyyy HH:mm:ss z");
-    ArrayList<assignment> assArrayList=new ArrayList<>();
+    static ArrayList<assignment> assArrayList=new ArrayList<>();
     @Override
     public void add(String uploadedby) {
         Scanner scs = new Scanner(System.in);
@@ -271,8 +292,10 @@ class assignment implements assessment, material {
         String problem_statement = scs.nextLine();
         System.out.print("Enter max marks: ");
         String max_marks = scs.nextLine();
-        String uploaded_time = date.format(dateobject);
+        Date uploaded_time = java.util.Calendar.getInstance().getTime();
         String uploaded_by = uploadedby;
+        System.out.print(uploaded_time);
+        
         assignment assignment_object = new assignment(problem_statement, max_marks , uploaded_by , uploaded_time);
         assArrayList.add(assignment_object);
     }
@@ -286,7 +309,7 @@ class assignment implements assessment, material {
     }
 }
 class quiz implements assessment, material {
-    public quiz(String uploaded_by, String uploaded_time, String question) {
+    public quiz(String uploaded_by, Date uploaded_time, String question) {
         this.uploaded_by = uploaded_by;
         this.uploaded_time = uploaded_time;
         this.question = question;
@@ -300,11 +323,11 @@ class quiz implements assessment, material {
         this.uploaded_by = uploaded_by;
     }
 
-    public String getUploaded_time() {
+    public Date getUploaded_time() {
         return uploaded_time;
     }
 
-    public void setUploaded_time(String uploaded_time) {
+    public void setUploaded_time(Date uploaded_time) {
         this.uploaded_time = uploaded_time;
     }
 
@@ -317,19 +340,21 @@ class quiz implements assessment, material {
     }
 
     private String uploaded_by;
-    private String uploaded_time;
+    private Date uploaded_time;
     private String question;
 
     Date dateobject = new Date();
     SimpleDateFormat date = new SimpleDateFormat("E,dd MM yyyy HH:mm:ss z");
-    ArrayList<quiz> quizzArrayList=new ArrayList<>();
+    static ArrayList<quiz> quizzArrayList=new ArrayList<>();
     public void add(String uploadedby) {
         Scanner scs = new Scanner(System.in);
         System.out.print("Enter question: ");
         String question = scs.nextLine();
-        String uploaded_time = date.format(dateobject);
+        //String uploaded_time = date.format(dateobject);
+        Date uploaded_time = java.util.Calendar.getInstance().getTime();
         String uploaded_by = uploadedby;
-        quiz quiz_object = new quiz(question, uploaded_by , uploaded_time);
+        System.out.print(uploaded_time);
+        quiz quiz_object = new quiz(question, uploaded_time , uploaded_by);
         quizzArrayList.add(quiz_object);
     }
 
@@ -355,13 +380,48 @@ class quiz implements assessment, material {
 }
 class instructor {
 
+    final static ArrayList <String> instructorID = new ArrayList<> ();
+
     public static void TryInstructorID(String instructor_id) {
-    }
+        
+
+        String [] id = {"I0" , "I1"};
+    
+        instructorID.add(id[0]);
+        instructorID.add(id[1]);
+
+
+    
+        int instryuctorIDINT=Integer.parseInt(instructor_id);
+
+
+    
+        System.out.println("Welcome " + id[instryuctorIDINT]);
+
+        }
 
     public static void close_assessment() {
     }
 }
 class student{
+
+    final static ArrayList <String> studentID = new ArrayList<> ();
+    private final ArrayList<Submission> submissions = new ArrayList<>();
+
+    public static void TryStudentID(String student_ID) {
+        
+
+        String [] id = {"I0" , "I1"};
+    
+        studentID.add(id[0]);
+        studentID.add(id[1]);
+
+    
+        int instryuctorIDINT=Integer.parseInt(student_ID);
+    
+        System.out.println("Welcome " + id[instryuctorIDINT]);
+
+        }
 
 }
 class comment implements material{
@@ -400,7 +460,7 @@ class comment implements material{
     private String uploaded_by;
     Date dateobject = new Date();
     SimpleDateFormat date = new SimpleDateFormat("E,dd MM yyyy HH:mm:ss z");
-    ArrayList<comment> commentsArrayList=new ArrayList<>();
+    static ArrayList<comment> commentsArrayList=new ArrayList<>();
     @Override
     public void add(String uploadedby) {
         Scanner sc = new Scanner(System.in);
@@ -431,7 +491,7 @@ class backpack {
 
     public static String instructor_id;
 
-    static int student_id;
+    static String student_id;
 
     public static void funciton () {
 
@@ -449,14 +509,15 @@ class backpack {
             int choice = sc.nextInt();
 
             if (choice == 1) {
-
+                sc.nextLine();
                 System.out.println("Instructors:\n" +
                         "0 - I0\n" +
                         "1 - I1");
 
                 System.out.print("Enter instructor ID. ");
-
                 instructor_id = sc.nextLine();
+
+                instructor.TryInstructorID(instructor_id);
 
                 while (true) {
 
@@ -499,14 +560,14 @@ class backpack {
 
                         if (choice == 1) {
 
-                            assignment assignmentobject = new assignment(instructor_id, instructor_id, instructor_id, instructor_id);
+                            assignment assignmentobject = new assignment(instructor_id, instructor_id, instructor_id, null);
 
                             assignmentobject.add(instructor_id);
 
                         } else if (choice == 2) {
 
 
-                            quiz quizobject = new quiz(instructor_id, instructor_id, instructor_id);
+                            quiz quizobject = new quiz(instructor_id, null, instructor_id);
 
                             quizobject.add(instructor_id);
 
@@ -517,7 +578,7 @@ class backpack {
                     else if(choicefortask == 3 ) {
 
 
-                        Lecture_Slides slidesobject = new Lecture_Slides(instructor_id, instructor_id, null, instructor_id, instructor_id);
+                        Lecture_Slides slidesobject = new Lecture_Slides();
                         lecture_Recordings videosobject = new lecture_Recordings();
 
                         slidesobject.view();
@@ -532,8 +593,8 @@ class backpack {
 
                         int counter = 0;
 
-                        assignment assignmentobject = new assignment(instructor_id, instructor_id, instructor_id, instructor_id);
-                        quiz quizobject = new quiz(instructor_id, instructor_id, instructor_id);
+                        assignment assignmentobject = new assignment(instructor_id, instructor_id, instructor_id, null);
+                        quiz quizobject = new quiz(instructor_id, null, instructor_id);
                         assignmentobject.view();
                         System.out.println("-----------------------------------------");
                         quizobject.view();
@@ -579,10 +640,12 @@ class backpack {
                         "0 - S0\n" +
                         "1 - S1\n" +
                         "2 - S2");
-
+                sc.nextLine();
                 System.out.println("Choose the student id. ");
 
-                student_id = sc.nextInt();
+                student_id = sc.nextLine();
+                student stobj = new student();
+                stobj.TryStudentID(student_id);
 
                 while (true) {
 
@@ -596,7 +659,7 @@ class backpack {
 
                     if(choicefortask == 1){
 
-                        Lecture_Slides slidesobject = new Lecture_Slides(instructor_id, instructor_id, null, instructor_id, instructor_id);
+                        Lecture_Slides slidesobject = new Lecture_Slides();
                         lecture_Recordings videosobject = new lecture_Recordings();
 
                         slidesobject.view();
@@ -612,8 +675,8 @@ class backpack {
 
                         int counter = 0;
 
-                        assignment assignmentobject = new assignment(instructor_id, instructor_id, instructor_id, instructor_id);
-                        quiz quizobject = new quiz(instructor_id, instructor_id, instructor_id);
+                        assignment assignmentobject = new assignment(instructor_id, instructor_id, instructor_id, null);
+                        quiz quizobject = new quiz(instructor_id, null, instructor_id);
                         assignmentobject.view();
                         System.out.println("-----------------------------------------");
                         quizobject.view();
@@ -622,6 +685,15 @@ class backpack {
                     else if(choicefortask == 3 ) {
                         //A2.student student_object = new student();
                         //student_object.submitAssessment(student_id);
+                        System.out.println("Pending Assessments: ");
+                        for(int i = 0; i < assignment.assArrayList.size(); i++){
+                            System.out.print("ID " + i);
+                            System.out.println(assignment.assArrayList.get(i));
+                        }
+                        int choice1  = sc.nextInt();
+                        assignment.assArrayList.get(choice1).submission();
+
+
                     }
                     else if(choicefortask == 4) {
                         System.out.println("view grades");
@@ -682,7 +754,7 @@ class backpack {
 
     ArrayList <String> instructors = new ArrayList<>();
 
-    ArrayList <String> student = new ArrayList<>();
+    static ArrayList <String> student = new ArrayList<>();
 }
 class Appp {    
     public static void main(String[] args){
