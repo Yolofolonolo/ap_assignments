@@ -3,19 +3,24 @@ import java.util.regex.Pattern;
 import java.util.*;
 import java.text.SimpleDateFormat;
 import java.util.zip.DataFormatException;
+import javax.print.DocFlavor.STRING;
+// import jdk.javadoc.internal.doclets.formats.html.SourceToHTMLConverter;
 import java.util.regex.Pattern;
 class Lecture_Slides implements material{
     private String topic;
     private String number;
     private String [] content;
     private String time;
+    private String uploaded_by;
 
-    public Lecture_Slides() {
+    public Lecture_Slides () {}
+
+    public Lecture_Slides(String topic, String number, String [] content , String uploaded_by , String uploaded_time) {
         this.topic = topic;
         this.number = number;
         this.content = content;
         this.time = time;
-        this.addedbyuser = addedbyuser;
+        this.uploaded_by = uploaded_by;
         this.filename = filename;
     }
 
@@ -27,7 +32,7 @@ class Lecture_Slides implements material{
         this.number = number;
     }
 
-    public void setContent(String[] content) {
+    public void setContent(String [] content) {
         this.content = content;
     }
 
@@ -35,8 +40,8 @@ class Lecture_Slides implements material{
         this.time = time;
     }
 
-    public void setAddedbyuser(int addedbyuser) {
-        this.addedbyuser = addedbyuser;
+    public void setUploaded_by(String uploadedby) {
+        this.uploaded_by = uploadedby;
     }
 
     public void setFilename(String filename) {
@@ -51,7 +56,7 @@ class Lecture_Slides implements material{
         return number;
     }
 
-    public String[] getContent() {
+    public String [] getContent() {
         return content;
     }
 
@@ -59,23 +64,57 @@ class Lecture_Slides implements material{
         return time;
     }
 
-    public int getAddedbyuser() {
-        return addedbyuser;
+    public String getUploaded_by() {
+        return uploaded_by;
     }
 
     public String getFilename() {
         return filename;
     }
 
-    private int addedbyuser;
+    
     private String filename;
 
+    Date dateobject = new Date();
+    SimpleDateFormat date = new SimpleDateFormat("E,dd MM yyyy HH:mm:ss z");
+    ArrayList<Lecture_Slides> slidesArrayList=new ArrayList<>();
+    private String uploaded_time;
+    int intnumber;
     @Override
     public void add(String uploadedby){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("enter topic of slides: ");
+        String topic = sc.nextLine();
+        System.out.print("enter number of slides: ");
+        String number = sc.nextLine();
+        intnumber=Integer.parseInt(number);
+        String [] content = new String[intnumber];
+        for (int i = 0 ; i < intnumber ; i++){
+            System.out.print("Content of slide " + (i + 1) + ": ");
+            content[i] = sc.nextLine();
+        }
+        String uploaded_time = date.format(dateobject);
+        String uploaded_by = uploadedby;
 
+        Lecture_Slides slides_object = new Lecture_Slides(topic, number, content , uploaded_by , uploaded_time);
+
+        slidesArrayList.add(slides_object);
+
+        System.out.println(slidesArrayList.size());
+        
     }
     @Override
     public void view(){
+        for (int i = 0 ; i < slidesArrayList.size() ; i++) {
+            System.out.println(slidesArrayList.get(i).topic + " - " + slidesArrayList.get(i).getUploaded_by());
+            System.out.println(slidesArrayList.get(i).uploaded_time);
+            for (int k = 0; k< slidesArrayList.get(i).intnumber ; k++) {
+                System.out.println("Slide: " + (k+1)  + ": " + slidesArrayList.get(i).content[k]);
+            }
+                                                                
+
+
+        }
 
     }
 }
@@ -85,7 +124,9 @@ class lecture_Recordings implements material {
     private String upload_time;
     private String file_name;
 
-    public lecture_Recordings() {
+    public lecture_Recordings() { }
+
+    public lecture_Recordings(String topic, String uploaded_by, String upload_time, String file_name) {
         this.topic = topic;
         this.uploaded_by = uploaded_by;
         this.upload_time = upload_time;
@@ -123,14 +164,37 @@ class lecture_Recordings implements material {
     public void setFile_name(String file_name) {
         this.file_name = file_name;
     }
-
+    Date dateobject = new Date();
+    SimpleDateFormat date = new SimpleDateFormat("E,dd MM yyyy HH:mm:ss z");
+    static ArrayList<lecture_Recordings> recordingArrayList=new ArrayList<>();
+    public boolean checkfile_name(String file_name){
+        return file_name.substring(file_name.length()-4).equals(".mp4");
+    }
     @Override
     public void add(String uploadedby){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("enter topic of recording");
+        String topic = sc.nextLine();
+        System.out.print("enter filename of recording");
+        String file_name = sc.nextLine();
+        if (!checkfile_name(file_name)){
+            System.out.print("invalid");
+            return;
+        }
+        String upload_time = date.format(dateobject);
+
+        lecture_Recordings obj = new lecture_Recordings(topic, uploaded_by, upload_time, file_name);
+        // String[] arr = {topic, file_name, uploaded_time, uploadedby};
+        lecture_Recordings.recordingArrayList.add(obj);
 
     }
     @Override
     public void view(){
-
+        for (int i = 0 ; i < recordingArrayList.size() ; i++) {
+            System.out.println(recordingArrayList.get(i).topic + " - " + recordingArrayList.get(i).getUploaded_by());
+            System.out.println(recordingArrayList.get(i).upload_time);
+            System.out.println(recordingArrayList.get(i).file_name);
+        }
     }
 }
 interface material{
@@ -138,12 +202,10 @@ interface material{
     public void view();
 }
 interface assessment{
-    public void add();
-    public void view();
     public void submission();
     public void grade();
 }
-class assignment implements assessment {
+class assignment implements assessment, material {
     public assignment() {
         this.problem_statement = problem_statement;
         this.max_marks = max_marks;
@@ -188,12 +250,6 @@ class assignment implements assessment {
     private String uploaded_by;
     private String uploaded_time;
 
-    public void add() {
-    }
-
-
-
-    @Override
     public void view() {
 
 
@@ -214,8 +270,13 @@ class assignment implements assessment {
 
 
     }
+
+    @Override
+    public void add(String uploadedby) {
+
+    }
 }
-class quiz implements assessment {
+class quiz implements assessment, material {
     public quiz() {
         this.uploaded_by = uploaded_by;
         this.uploaded_time = uploaded_time;
@@ -250,7 +311,7 @@ class quiz implements assessment {
     private String uploaded_time;
     private String question;
 
-    public void add() {
+    public void add(String uploaded_by) {
     }
 
     public void view() {
@@ -269,7 +330,6 @@ class quiz implements assessment {
     }
 
 }
-
 class instructor {
 
     public static void TryInstructorID(String instructor_id) {
@@ -325,27 +385,25 @@ class comment implements material{
         String comments = sc.nextLine();
         String uploaded_time = date.format(dateobject);
         String uploaded_by = uploadedby;
-        
+
         comment comment_object = new comment(comments , uploaded_by , uploaded_time);
-        
         commentsArrayList.add(comment_object);
 
     }
 
     @Override
     public void view() {
+        System.out.println(commentsArrayList.size());
         for (int i = 0 ; i < commentsArrayList.size() ; i++) {
+            
             System.out.println(commentsArrayList.get(i).comments + " - " + commentsArrayList.get(i).getUploaded_by());
             System.out.println(commentsArrayList.get(i).uploaded_time);
 
         }
     }
-
-    public void add() {
-    }
 }
 class backpack {
-    //arraylist for all the classes 
+    //arraylist for all the classes
     static Scanner sc = new Scanner(System.in);
 
     public static String instructor_id;
@@ -396,7 +454,6 @@ class backpack {
                         if (choiceforlecture == 1) {
 
                             Lecture_Slides slidesobject = new Lecture_Slides();
-
                             slidesobject.add(instructor_id);
 
                         } else if (choiceforlecture == 2) {
@@ -404,7 +461,6 @@ class backpack {
                             lecture_Recordings videosobject = new lecture_Recordings();
 
                             videosobject.add(instructor_id);
-
                         }
 
                     }
@@ -422,14 +478,14 @@ class backpack {
 
                             assignment assignmentobject = new assignment();
 
-                            assignmentobject.add();
+                            assignmentobject.add(instructor_id);
 
                         } else if (choice == 2) {
 
 
                             quiz quizobject = new quiz();
 
-                            quizobject.add();
+                            quizobject.add(instructor_id);
 
                         }
 
@@ -437,7 +493,9 @@ class backpack {
 
                     else if(choicefortask == 3 ) {
 
-                        Lecture_Slides slidesobject = new Lecture_Slides();
+                        System.out.println("GAANDU");
+
+                        Lecture_Slides slidesobject = new Lecture_Slides(instructor_id, instructor_id, null, instructor_id, instructor_id);
                         lecture_Recordings videosobject = new lecture_Recordings();
 
                         slidesobject.view();
@@ -478,7 +536,7 @@ class backpack {
                     else if(choicefortask == 8) {
 
                         comment commentObject = new comment(instructor_id, instructor_id, instructor_id);
-                        commentObject.add();
+                        commentObject.add(instructor_id);
 
                     }
 
@@ -506,7 +564,7 @@ class backpack {
 
                 while (true) {
 
-                    A2.student.TryStudentID(student_id);
+                    //A2.student.TryStudentID(student_id);
 
                     displaystudent();
 
@@ -516,7 +574,7 @@ class backpack {
 
                     if(choicefortask == 1){
 
-                        Lecture_Slides slidesobject = new Lecture_Slides();
+                        Lecture_Slides slidesobject = new Lecture_Slides(instructor_id, instructor_id, null, instructor_id, instructor_id);
                         lecture_Recordings videosobject = new lecture_Recordings();
 
                         slidesobject.view();
@@ -524,6 +582,7 @@ class backpack {
                         System.out.println("-----------------------------------------");
 
                         videosobject.view();
+
 
                     }
 
@@ -539,8 +598,8 @@ class backpack {
 
                     }
                     else if(choicefortask == 3 ) {
-                        A2.student student_object = new student();
-                        student_object.submitAssessment(student_id);
+                        //A2.student student_object = new student();
+                        //student_object.submitAssessment(student_id);
                     }
                     else if(choicefortask == 4) {
                         System.out.println("view grades");
@@ -553,7 +612,7 @@ class backpack {
                     else if(choicefortask == 6 ) {
 
                         comment commentObject = new comment(instructor_id, instructor_id, instructor_id);
-                        commentObject.add();
+                        commentObject.add(instructor_id);
 
                     }
                     else if(choicefortask == 7) {
@@ -602,13 +661,10 @@ class backpack {
     ArrayList <String> instructors = new ArrayList<>();
 
     ArrayList <String> student = new ArrayList<>();
-    public static void start() {
-    }
 }
-
-public class Appp {
+class Appp {    
     public static void main(String[] args){
-        backpack.start();
+        backpack.funciton();
     }
 
 }
