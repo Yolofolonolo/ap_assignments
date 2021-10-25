@@ -1,6 +1,6 @@
 import java.util.Random;
 import java.util.Scanner;
-public class ass_3 {
+public class snake_ladder {
     static String floor[]=new String[14];
     public static void main(String[] args) {
 
@@ -11,21 +11,27 @@ public class ass_3 {
         System.out.println("The game setup is ready");
 
         while(true){
+            
             System.out.println("Hit enter to roll a dice");
+            sc.nextLine();
             dice d = new dice();
             int diceResult = d.generateNumber();
 
             if(diceResult==1){
+                player_.pos +=1;
+                System.out.println("dice gave " + diceResult);
                 System.out.println("Player position - " + player_.pos);
                 System.out.println(player_.name + " has reached an empty floor");
+                player_.score+=1;
                 System.out.println("Total points " + player_.score);
 
-                player_.pos +=1;
-                player_.score+=1;
+                
+                
                 break;
             }
             System.out.println("Game can not start until you get 1.");
         }
+        // at this point we are in second try
 
         boolean first_try = true;
 
@@ -37,10 +43,10 @@ public class ass_3 {
             int d1 = d.generateNumber();
             System.out.println("dice gave " + d1);
 
-            if(first_try && d1 == 2){
-                System.out.println("Game cannot start until you get 1");
-                continue;
-            }
+            // if(first_try && d1 == 2){
+            //     System.out.println("Game cannot start until you get 1");
+            //     continue;
+            // }
 
             if(d1 == 1 && first_try){
                 first_try = false;
@@ -49,28 +55,34 @@ public class ass_3 {
             if(player_.pos+d1 <= 13) {
 // n is the position to be updated
                 int n = d1 + player_.pos;
-
+                player_.pos = player_.pos + d1;
+                player_.floor_ = "EMPTY FLOOR";
                 player_.display_();
 //                these floor are empty floors
                 if (n == 1 || n == 3 || n == 4 || n == 6 || n == 7 || n == 9 || n == 10) {
                     empty e = new empty();
                     e.score_(floor[player_.pos]);
+                    e.floor_ = "Empty Floor";
                     e.display_();
                 } else if (n == 2) {
                     stairs s = new stairs();
                     s.score_(floor[player_.pos]);
+                    s.floor_ = "Elevator Floor";
                     s.display_();
                 } else if (n == 5) {
                     snake_ sn = new snake_();
                     sn.score_(floor[player_.pos]);
+                    sn.floor_ = "Snake Floor" ;
                     sn.display_();
                 } else if (n == 8) {
                     empty e = new empty();
                     e.score_(floor[player_.pos]);
+                    e.floor_ = "Ladder Floor";
                     e.display_();
                 } else if (n == 11) {
                     snake_ sn = new snake_();
                     sn.score_(floor[player_.pos]);
+                    sn.floor_ = "King Cobra";
                     sn.display_();
                 } else if (n == 13) {
                     player_.score += 1;
@@ -137,3 +149,14 @@ class snake_ extends player_{
 }
 
 class stairs extends player_ {
+    public static void score_(String floor) {
+        if (floor.equals("LADDER")) {
+            player_.score+=2;
+            player_.pos = 12;
+        }
+        if (floor.equals("ELEVATOR")) {
+            player_.score+=4;
+            player_.pos = 10;
+        }
+    }
+}
