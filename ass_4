@@ -1,0 +1,194 @@
+
+import java.util.ArrayList;
+import java.util.Random;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class App {
+    public static ArrayList<String> store = new ArrayList<>();
+    public static ArrayList<String> position = new ArrayList<>();
+    public static ArrayList<String> soft_toy = new ArrayList<>();
+    static class FastReader {
+        BufferedReader br;
+        StringTokenizer st;
+        public FastReader() {
+            br = new BufferedReader(
+                    new InputStreamReader(System.in));
+        }
+        String next() {
+            while (st == null || !st.hasMoreElements()) {
+                try {
+                    st = new StringTokenizer(br.readLine());
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return st.nextToken();
+        }
+
+        int nextInt() { return Integer.parseInt(next()); }
+
+        long nextLong() { return Long.parseLong(next()); }
+
+        double nextDouble()
+        {
+            return Double.parseDouble(next());
+        }
+
+        String nextLine()
+        {
+            String str = "";
+            try {
+                str = br.readLine();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            return str;
+        }
+    }
+    public static void main(String[] args) {
+        FastReader sc = new FastReader();
+        FastReader scn = new FastReader();
+        Random rd = new Random();
+        printStatements(1,new String[]{});
+        sc.nextLine();
+        printStatements(2,new String[]{});
+        _initLists();
+        int cnt = 0;
+        for(;cnt<5;cnt++){
+            printStatements(3,new String[]{position.get(cnt)});
+            sc.nextLine();
+            int no;
+            no = rd.nextInt(23)+1;
+            if (no > 20) {
+                printStatements(4,new String[]{});
+            }
+            else {
+                printStatements(5,new String[]{""+no});
+                if (no%2==0) {
+                    printStatements(6, new String[]{soft_toy.get(no-1)});
+                    store.add(soft_toy.get(no-1));
+                }
+                else {
+                    printStatements(7,new String[]{});
+                    String choice = sc.nextLine();
+                    if (choice.toLowerCase().compareTo("integer") == 0) {
+                        int no1 = rd.nextInt(50), no2 = rd.nextInt(50), res;
+                        printStatements(8,new String[]{""+no1,""+no2});
+                        res = scn.nextInt();
+                        if (Calculator.check(no1, no2, res)) {
+                            printStatements(9,new String[]{soft_toy.get(no-1)});
+                            store.add(soft_toy.get(no-1));
+                        }
+                        else {
+                            printStatements(10,new String[]{});
+                        }
+                    }
+                    else if (choice.toLowerCase().compareTo("string") == 0) {
+                        String str1 = randomString(4), str2 = randomString(4), res;
+                        printStatements(11,new String[]{str1,str2});
+                        res = sc.nextLine();
+                        if (Calculator.check(str1, str2, res)) {
+                            printStatements(9,new String[]{soft_toy.get(no-1)});
+                            store.add(soft_toy.get(no-1));
+                        }
+                        else {
+                            printStatements(10,new String[]{});
+                        }
+                    }
+                }
+            }
+            System.out.println("-----------------------------------------");
+        }
+        showPrizesWon();
+    }
+
+    private static void showPrizesWon() {
+        System.out.println("Soft toys won by you are-");
+        System.out.println(String.join(",",store));
+    }
+    public static void _initLists(){
+        position.add("first");
+        position.add( "second");
+        position.add("third");
+        position.add("fourth");
+        position.add("fifth");
+        soft_toy.add("teddy bear");
+        soft_toy.add("unicorn");
+        soft_toy.add("spiderman");
+        soft_toy.add("donald duck");
+        soft_toy.add("mickey mouse");
+        soft_toy.add("tom");
+        soft_toy.add("jerry");
+        soft_toy.add("oggy");
+        soft_toy.add("smurf");
+        soft_toy.add("penguin");
+        soft_toy.add("cat");
+        soft_toy.add("dog");
+        soft_toy.add("pony");
+        soft_toy.add("thor");
+        soft_toy.add("elf");
+        soft_toy.add("santa claus");
+        soft_toy.add("panda");
+        soft_toy.add("elephant");
+        soft_toy.add("giraffe");
+        soft_toy.add("reindeer");
+    }
+    private static String randomString(int size) {
+        StringBuilder sb = new StringBuilder(size);
+        Random rd = new Random();
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+"abcdefghijklmnopqrstuvxyz";
+        for (int i = 0; i < size; i++) {
+            sb.append(characters.charAt(rd.nextInt(characters.length())));
+        }
+        return sb.toString();
+    }
+    private static void printStatements(int i, String[] s){
+        switch (i){
+            case 1: System.out.print("Press Enter to Start");
+                break;
+            case 2: System.out.println("Game Is Ready\n---------------------------------------\n");
+                break;
+            case 3: System.out.println("Press enter for "+s[0]+" hop");
+                break;
+            case 4: System.out.println("Kid Slow Down. You zoomed past the tiles and splashed in the mud!!");
+                break;
+            case 5: System.out.println("You landed on tile "+s[0]);
+                break;
+            case 6: System.out.println("Congratulations! You got a " + s[0] + ". Keep it safe!");
+                break;
+            case 7: System.out.println("Lets play QnA. Integer or string?");
+                break;
+            case 8: System.out.println("Calculate the result of "+s[0]+" added by "+s[1]);
+                break;
+            case 9: System.out.println("Correct answer!\nYou won a "+s[0]+" soft toy. Keep it safe!");
+                break;
+            case 10: System.out.println("Sorry, Wrong answer. Better come prepared next time!");
+                break;
+            case 11: System.out.println("Calculate the concatenation of strings "+s[0]+" and "+s[1]);
+                break;
+        }
+    }
+}
+class GenericMethod{
+    public static < E > void printArray( E[] inputArray ) {
+       for(E element : inputArray) {
+          System.out.printf("%s ", element);
+       }
+       System.out.println();
+    }
+}
+
+
+class Calculator {
+    public static <e> boolean check(int no1, int no2, int res) {
+        return (res == no1+no2);
+    }
+    public static <e> boolean check(String str1, String str2, String res) {
+        return (res.equals(str1 + str2));
+    }
+}
